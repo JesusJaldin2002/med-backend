@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "username": "admin_user",
+    "name": "Admin User",
+    "email": "admin@gmail.com",
+    "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
+    "role": "ADMINISTRATOR"
+  },
+  {
+    "id": 2,
+    "username": "assistant_user",
+    "name": "Assistant User",
+    "email": "assistant@gmail.com",
+    "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
+    "role": "ASSISTANT_ADMINISTRATOR"
+  },
+  {
+    "id": 3,
+    "username": "customer_user",
+    "name": "Customer User",
+    "email": "customer@gmail.com",
+    "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
+    "role": "CUSTOMER"
+  }
+]

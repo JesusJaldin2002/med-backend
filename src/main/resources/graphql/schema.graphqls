@@ -1,0 +1,75 @@
+# Directiva para verificar que los campos no estén en blanco
+directive @NotBlank (message: String = "Field is mandatory") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
+# Tipo para el usuario
+type User {
+    id: Int
+    username: String
+    email: String
+    name: String
+    role: Role
+}
+
+# Tipo para la respuesta de autenticación
+type AuthenticationResponse {
+    jwt: String
+}
+
+# Tipo para la respuesta de registro
+type RegisteredUser {
+    id: Int
+    username: String
+    email: String
+    name: String
+}
+
+# Tipo de respuesta de logout
+type LogoutResponse {
+    message: String
+}
+
+# Entrada para la solicitud de autenticación
+input AuthenticationRequestInput {
+    identifier: String @NotBlank
+    password: String @NotBlank
+}
+
+# Entrada para el registro de un nuevo usuario
+input SaveUserInput {
+    username: String @NotBlank
+    email: String @NotBlank
+    password: String @NotBlank
+    repeatedPassword: String @NotBlank
+    name: String
+}
+
+# Enum para los roles de usuario
+enum Role {
+    ADMINISTRATOR
+    ASSISTANT_ADMINISTRATOR
+    CUSTOMER
+}
+
+# Consultas (Queries)
+type Query {
+    # Validar un token
+    validateToken(jwt: String!): Boolean
+
+    # Obtener el perfil del usuario autenticado
+    findMyProfile: User
+
+    # Obtener todos los usuarios (si aplicable)
+    findAllUsers: [User]
+}
+
+# Mutaciones (Mutations)
+type Mutation {
+    # Autenticación del usuario
+    authenticate(input: AuthenticationRequestInput!): AuthenticationResponse
+
+    # Registrar un nuevo usuario
+    registerUser(input: SaveUserInput!): RegisteredUser
+
+    # Logout del usuario
+    logout: LogoutResponse
+}
