@@ -13,7 +13,7 @@ public class MedicalNote {
 
     private String noteType;
     private String details;
-    private LocalDate date;
+    private String date;
 
     // Llave foránea para la relación con MedicalRecord
     private int medicalRecordId;
@@ -21,7 +21,7 @@ public class MedicalNote {
     public MedicalNote() {
     }
 
-    public MedicalNote(int id, String noteType, String details, LocalDate date, int medicalRecordId) {
+    public MedicalNote(int id, String noteType, String details, String date, int medicalRecordId) {
         this.id = id;
         this.noteType = noteType;
         this.details = details;
@@ -53,11 +53,11 @@ public class MedicalNote {
         this.details = details;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
