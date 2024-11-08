@@ -34,13 +34,23 @@ public enum Role {
             RolePermission.DELETE_ONE_APPOINTMENT,
             RolePermission.FIND_ALL_APPOINTMENTS,
             RolePermission.FIND_APPOINTMENTS_BY_PATIENT,
-            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR
+            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR,
+
+            RolePermission.CREATE_ONE_MEDICAL_RECORD,
+            RolePermission.UPDATE_ONE_MEDICAL_RECORD,
+            RolePermission.DELETE_ONE_MEDICAL_RECORD,
+            RolePermission.FIND_ALL_MEDICAL_RECORDS,
+            RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT
 
     )),
 
     DOCTOR(Arrays.asList(
 
             RolePermission.FIND_SCHEDULES_BY_DOCTOR,
+
+            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR,
+
+            RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT,
 
             RolePermission.READ_MY_PROFILE
     )),
@@ -64,13 +74,24 @@ public enum Role {
             RolePermission.DELETE_ONE_APPOINTMENT,
             RolePermission.FIND_ALL_APPOINTMENTS,
             RolePermission.FIND_APPOINTMENTS_BY_PATIENT,
-            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR
+            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR,
+
+            // Medical Records
+            RolePermission.CREATE_ONE_MEDICAL_RECORD,
+            RolePermission.UPDATE_ONE_MEDICAL_RECORD,
+            RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT,
+            RolePermission.FIND_ALL_MEDICAL_RECORDS
 
 
     )),
 
     PATIENT(Arrays.asList(
-            RolePermission.READ_MY_PROFILE
+
+            RolePermission.READ_MY_PROFILE,
+            // Appointments
+            RolePermission.FIND_APPOINTMENTS_BY_PATIENT,
+            // Medical Records
+            RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT
     ));
 
     public List<RolePermission> getPermissions() {

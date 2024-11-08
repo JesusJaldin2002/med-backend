@@ -92,6 +92,20 @@ type Appointment {
     doctorId: Int
 }
 
+# Tipo para la historia clinica
+type MedicalRecord {
+    id: Int
+    allergies: String
+    chronicConditions: String
+    medications: String
+    bloodType: String
+    familyHistory: String
+    height: Float
+    weight: Float
+    vaccinationHistory: String
+    patientId: Int
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -139,6 +153,19 @@ input SaveAppointmentInput {
     doctorId: Int
 }
 
+# Entrada para el registro y actualización de un registro médico
+input SaveMedicalRecordInput {
+    allergies: String
+    chronicConditions: String
+    medications: String
+    bloodType: String
+    familyHistory: String
+    height: Float
+    weight: Float
+    vaccinationHistory: String
+    patientId: Int
+}
+
 # Enum para los roles de usuario
 enum Role {
     ADMINISTRATOR
@@ -164,6 +191,9 @@ type Query {
     getAllAppointments: [Appointment]
     getAppointmentsByPatient(patientId: Int!): [Appointment]
     getAppointmentsByDoctor(doctorId: Int!): [Appointment]
+    # Medical Records
+    getAllMedicalRecords: [MedicalRecord]
+    getMedicalRecordByPatient(patientId: Int!): MedicalRecord
 }
 
 # Mutaciones (Mutations)
@@ -192,5 +222,10 @@ type Mutation {
     registerAppointment(appointmentInput: SaveAppointmentInput!): Appointment
     updateAppointment(appointmentId: Int!, appointmentInput: SaveAppointmentInput!): Appointment
     deleteAppointment(appointmentId: Int!): Boolean
+
+    # Medical Records
+    registerMedicalRecord(medicalRecordInput: SaveMedicalRecordInput!): MedicalRecord
+    updateMedicalRecord(medicalRecordId: Int!, medicalRecordInput: SaveMedicalRecordInput!): MedicalRecord
+    deleteMedicalRecord(medicalRecordId: Int!): Boolean
 
 }

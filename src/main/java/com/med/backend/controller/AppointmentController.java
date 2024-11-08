@@ -45,13 +45,13 @@ public class AppointmentController {
         return appointmentService.getAllAppointments();
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST','PATIENT')")
     @QueryMapping(name = "getAppointmentsByPatient")
     public List<Appointment> getAppointmentsByPatient(@Argument("patientId") int patientId) {
         return appointmentService.getAllByPatient(patientId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST', 'DOCTOR')")
     @QueryMapping(name = "getAppointmentsByDoctor")
     public List<Appointment> getAppointmentsByDoctor(@Argument("doctorId") int doctorId) {
         return appointmentService.getAllByDoctor(doctorId);
