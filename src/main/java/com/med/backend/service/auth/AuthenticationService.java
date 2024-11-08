@@ -18,9 +18,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -114,16 +117,17 @@ public class AuthenticationService {
     }
 
 
-    public void logout(HttpServletRequest request) {
-
+    public void logout() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         String jwt = jwtService.extractJwtFromRequest(request);
+
         if (!StringUtils.hasText(jwt)) {
-            return;
+            throw new RuntimeException("Missing or invalid Authorization header");
         }
 
         Optional<JwtToken> token = jwtTokenRepository.findByToken(jwt);
 
-        if (token.isPresent()  && token.get().isValid()) {
+        if (token.isPresent() && token.get().isValid()) {
             token.get().setValid(false);
             jwtTokenRepository.save(token.get());
         }

@@ -33,12 +33,12 @@ public class AuthenticationController {
 
     @PreAuthorize("isAuthenticated()")
     @MutationMapping(name = "logout")
-    public LogoutResponse logout(HttpServletRequest request) {
-        authenticationService.logout(request);
+    public LogoutResponse logout() {
+        authenticationService.logout();
         return new LogoutResponse("Logout successful");
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','ASSISTANT_ADMINISTRATOR','CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','DOCTOR','RECEPTIONIST','PATIENT')")
     @QueryMapping(name = "findMyProfile")
     public User findMyProfile() {
         return authenticationService.findLoggedInUser();
