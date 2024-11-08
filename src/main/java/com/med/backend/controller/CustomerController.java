@@ -1,7 +1,7 @@
 package com.med.backend.controller;
 
-import com.med.backend.dto.RegisteredUser;
-import com.med.backend.dto.SaveUser;
+import com.med.backend.dto.auth.RegisteredUser;
+import com.med.backend.dto.user.SaveUser;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.repository.UserRepository;
 import com.med.backend.service.auth.AuthenticationService;

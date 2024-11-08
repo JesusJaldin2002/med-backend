@@ -8,6 +8,7 @@ type User {
     email: String
     name: String
     role: Role
+    authorities: [String] # Añadido para mostrar las authorities
 }
 
 # Tipo para la respuesta de autenticación
@@ -28,6 +29,59 @@ type LogoutResponse {
     message: String
 }
 
+# Tipo para el doctor
+type Doctor {
+    id: Int
+    specialty: String
+    licenseNumber: String
+    phone: String
+    userId: Int
+}
+
+# Tipo para la respuesta del doctor con datos de usuario asociado
+type DoctorUserDTO {
+    idDoctor: Int
+    name: String
+    username: String
+    email: String
+    specialty: String
+    licenseNumber: String
+    phone: String
+    idUser: Int
+}
+
+# Tipo para el paciente
+type Patient {
+    id: Int
+    dateOfBirth: String
+    gender: String
+    phone: String
+    address: String
+    userId: Int
+}
+
+# Tipo para la respuesta del paciente con datos de usuario asociado
+type PatientUserDTO {
+    idPatient: Int
+    name: String
+    username: String
+    email: String
+    dateOfBirth: String
+    gender: String
+    phone: String
+    address: String
+    idUser: Int
+}
+
+# Tipo para el horario (Schedule)
+type Schedule {
+    id: Int
+    dayOfWeek: String
+    startTime: String
+    endTime: String
+    doctorId: Int
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -36,40 +90,79 @@ input AuthenticationRequestInput {
 
 # Entrada para el registro de un nuevo usuario
 input SaveUserInput {
-    username: String @NotBlank
-    email: String @NotBlank
-    password: String @NotBlank
-    repeatedPassword: String @NotBlank
+    username: String
+    email: String
+    password: String
+    repeatedPassword: String
     name: String
+}
+
+# Entrada para el registro de un nuevo doctor
+input SaveDoctorInput {
+    specialty: String
+    licenseNumber: String
+    phone: String
+}
+
+# Entrada para el registro de un nuevo paciente
+input SavePatientInput {
+    dateOfBirth: String
+    gender: String
+    phone: String
+    address: String
+}
+
+# Entrada para el registro y actualización de un horario
+input SaveScheduleInput {
+    dayOfWeek: String
+    startTime: String
+    endTime: String
+    doctorId: Int
 }
 
 # Enum para los roles de usuario
 enum Role {
     ADMINISTRATOR
-    ASSISTANT_ADMINISTRATOR
-    CUSTOMER
+    DOCTOR
+    RECEPTIONIST
+    PATIENT
 }
 
 # Consultas (Queries)
 type Query {
-    # Validar un token
+    # Users
     validateToken(jwt: String!): Boolean
-
-    # Obtener el perfil del usuario autenticado
     findMyProfile: User
-
-    # Obtener todos los usuarios (si aplicable)
     findAllUsers: [User]
+    # Doctors
+    getAllDoctors: [DoctorUserDTO]
+    # Patients
+    getAllPatients: [PatientUserDTO]
+    # Schedules
+    getAllSchedules: [Schedule]
+    getSchedulesByDoctor(doctorId: Int!): [Schedule]
 }
 
 # Mutaciones (Mutations)
 type Mutation {
-    # Autenticación del usuario
+    # Users
     authenticate(input: AuthenticationRequestInput!): AuthenticationResponse
-
-    # Registrar un nuevo usuario
     registerUser(input: SaveUserInput!): RegisteredUser
-
-    # Logout del usuario
     logout: LogoutResponse
+
+    # Doctors
+    registerDoctor(doctorInput: SaveDoctorInput!, userInput: SaveUserInput!): Doctor
+    updateDoctor(doctorId: Int!, doctorInput: SaveDoctorInput!, userInput: SaveUserInput!): Doctor
+    deleteDoctor(doctorId: Int!): Boolean
+
+    # Patients
+    registerPatient(patientInput: SavePatientInput!, userInput: SaveUserInput!): Patient
+    updatePatient(patientId: Int!, patientInput: SavePatientInput !, userInput: SaveUserInput!): Patient
+    deletePatient(patientId: Int!): Boolean
+
+    # Schedules
+    registerSchedule(scheduleInput: SaveScheduleInput!): Schedule
+    updateSchedule(scheduleId: Int!, scheduleInput: SaveScheduleInput!): Schedule
+    deleteSchedule(scheduleId: Int!): Boolean
+
 }

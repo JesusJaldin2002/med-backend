@@ -9,18 +9,26 @@
   },
   {
     "id": 2,
-    "username": "assistant_user",
-    "name": "Assistant User",
-    "email": "assistant@gmail.com",
+    "username": "doctor_user",
+    "name": "Doctor User",
+    "email": "doctor@gmail.com",
     "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
-    "role": "ASSISTANT_ADMINISTRATOR"
+    "role": "DOCTOR"
   },
   {
     "id": 3,
-    "username": "customer_user",
-    "name": "Customer User",
-    "email": "customer@gmail.com",
+    "username": "receptionist_user",
+    "name": "Receptionist User",
+    "email": "receptionist@gmail.com",
     "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
-    "role": "CUSTOMER"
+    "role": "RECEPTIONIST"
+  },
+  {
+    "id": 4,
+    "username": "patient_user",
+    "name": "Patient User",
+    "email": "patient@gmail.com",
+    "password": "$2a$12$QxiXNXzak4mhHTUEECUHzuXmR5Fp/saU3qLT5CYWL.60Yc0aOaRme",
+    "role": "PATIENT"
   }
 ]

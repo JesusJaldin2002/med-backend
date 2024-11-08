@@ -1,7 +1,7 @@
 package com.med.backend.service.auth;
 
-import com.med.backend.dto.RegisteredUser;
-import com.med.backend.dto.SaveUser;
+import com.med.backend.dto.auth.RegisteredUser;
+import com.med.backend.dto.user.SaveUser;
 import com.med.backend.dto.auth.AuthenticationRequest;
 import com.med.backend.dto.auth.AuthenticationResponse;
 import com.med.backend.persistence.entity.User;
@@ -106,6 +106,10 @@ public class AuthenticationService {
 
     public User findLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            System.out.println("Authorities: " + authentication.getAuthorities());
+        }
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();

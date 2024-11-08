@@ -1,6 +1,6 @@
 package com.med.backend.exception;
 
-import com.med.backend.dto.ApiError;
+import com.med.backend.dto.auth.ApiError;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;
@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,16 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
         apiError.setMethod(env.getField().getName());
 
         if (ex instanceof AccessDeniedException) {
+            apiError.setHttpCode(HttpStatus.FORBIDDEN.value());
+            apiError.setMessage("Acceso denegado. No tienes los permisos necesarios para acceder a esta función.");
+            apiError.setBackendMessage("Acceso denegado: " + ex.getMessage());
+            logger.error("AccessDeniedException: {}", ex.getMessage());
+        } else if (ex instanceof BadCredentialsException) {
+            apiError.setHttpCode(HttpStatus.UNAUTHORIZED.value());
+            apiError.setMessage("El nombre de usuario o la contraseña son incorrectos. Por favor, verifica tus credenciales.");
+            apiError.setBackendMessage("Credenciales inválidas: " + ex.getMessage());
+            logger.error("BadCredentialsException: {}", ex.getMessage());
+        } else if (ex instanceof AccessDeniedException) {
             apiError.setHttpCode(HttpStatus.FORBIDDEN.value());
             apiError.setMessage("Acceso denegado. No tienes los permisos necesarios para acceder a esta función.");
             apiError.setBackendMessage("Acceso denegado: " + ex.getMessage());
@@ -74,7 +85,8 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
 
     private String resolveErrorCode(Throwable ex) {
         if (ex instanceof AccessDeniedException) return "ACCESS_DENIED";
-        if (ex instanceof AuthenticationException || ex instanceof AuthenticationCredentialsNotFoundException || ex instanceof AuthenticationServiceException) return "UNAUTHORIZED_ACCESS";
+        if (ex instanceof AuthenticationException || ex instanceof AuthenticationCredentialsNotFoundException || ex instanceof AuthenticationServiceException)
+            return "UNAUTHORIZED_ACCESS";
         if (ex instanceof DuplicateResourceException) return "DUPLICATE_RESOURCE";
         if (ex instanceof MethodArgumentNotValidException) return "INVALID_ARGUMENT";
         if (ex instanceof ObjectNotFoundException) return "OBJECT_NOT_FOUND";
