@@ -27,7 +27,15 @@ public enum Role {
             RolePermission.UPDATE_ONE_SCHEDULE,
             RolePermission.DELETE_ONE_SCHEDULE,
             RolePermission.FIND_ALL_SCHEDULES,
-            RolePermission.FIND_SCHEDULES_BY_DOCTOR
+            RolePermission.FIND_SCHEDULES_BY_DOCTOR,
+
+            RolePermission.CREATE_ONE_APPOINTMENT,
+            RolePermission.UPDATE_ONE_APPOINTMENT,
+            RolePermission.DELETE_ONE_APPOINTMENT,
+            RolePermission.FIND_ALL_APPOINTMENTS,
+            RolePermission.FIND_APPOINTMENTS_BY_PATIENT,
+            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR
+
     )),
 
     DOCTOR(Arrays.asList(
@@ -48,7 +56,15 @@ public enum Role {
             RolePermission.FIND_ALL_PATIENTS,
 
             // Schedules
-            RolePermission.FIND_SCHEDULES_BY_DOCTOR
+            RolePermission.FIND_SCHEDULES_BY_DOCTOR,
+
+            // Appointments
+            RolePermission.CREATE_ONE_APPOINTMENT,
+            RolePermission.UPDATE_ONE_APPOINTMENT,
+            RolePermission.DELETE_ONE_APPOINTMENT,
+            RolePermission.FIND_ALL_APPOINTMENTS,
+            RolePermission.FIND_APPOINTMENTS_BY_PATIENT,
+            RolePermission.FIND_APPOINTMENTS_BY_DOCTOR
 
 
     )),

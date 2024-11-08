@@ -81,6 +81,16 @@ type Schedule {
     endTime: String
     doctorId: Int
 }
+# Tipo para la cita (Appointment)
+type Appointment {
+    id: Int
+    date: String
+    time: String
+    status: String
+    reason: String
+    patientId: Int
+    doctorId: Int
+}
 
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
@@ -120,6 +130,15 @@ input SaveScheduleInput {
     doctorId: Int
 }
 
+# Entrada para el registro y actualización de una cita
+input SaveAppointmentInput {
+    date: String
+    time: String
+    reason: String
+    patientId: Int
+    doctorId: Int
+}
+
 # Enum para los roles de usuario
 enum Role {
     ADMINISTRATOR
@@ -141,6 +160,10 @@ type Query {
     # Schedules
     getAllSchedules: [Schedule]
     getSchedulesByDoctor(doctorId: Int!): [Schedule]
+    # Appointments
+    getAllAppointments: [Appointment]
+    getAppointmentsByPatient(patientId: Int!): [Appointment]
+    getAppointmentsByDoctor(doctorId: Int!): [Appointment]
 }
 
 # Mutaciones (Mutations)
@@ -164,5 +187,10 @@ type Mutation {
     registerSchedule(scheduleInput: SaveScheduleInput!): Schedule
     updateSchedule(scheduleId: Int!, scheduleInput: SaveScheduleInput!): Schedule
     deleteSchedule(scheduleId: Int!): Boolean
+
+    # Appointments
+    registerAppointment(appointmentInput: SaveAppointmentInput!): Appointment
+    updateAppointment(appointmentId: Int!, appointmentInput: SaveAppointmentInput!): Appointment
+    deleteAppointment(appointmentId: Int!): Boolean
 
 }

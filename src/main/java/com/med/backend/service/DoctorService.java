@@ -7,9 +7,7 @@ import com.med.backend.dto.doctor.saveDoctorDto;
 import com.med.backend.dto.doctor.DoctorUserDTO;
 import com.med.backend.dto.user.SaveUser;
 import com.med.backend.persistence.entity.Doctor;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface DoctorService {
     Doctor registerOneDoctor(saveDoctorDto newDoctor, SaveUser newUser);
     List<DoctorUserDTO> getAllDoctors();
