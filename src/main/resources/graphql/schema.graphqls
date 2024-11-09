@@ -115,6 +115,19 @@ type MedicalNote {
     medicalRecordId: Int
 }
 
+# Tipo para la consulta médica (Consult)
+type Consult {
+    id: Int
+    date: String
+    diagnosis: String
+    treatment: String
+    observations: String
+    currentWeight: Float
+    currentHeight: Float
+    medicalRecordId: Int
+    appointmentId: Int
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -183,6 +196,16 @@ input SaveMedicalNoteInput {
     medicalRecordId: Int
 }
 
+# Entrada para el registro y actualización de una consulta médica
+input SaveConsultInput {
+    diagnosis: String
+    treatment: String
+    observations: String
+    currentWeight: Float
+    currentHeight: Float
+    appointmentId: Int
+}
+
 # Enum para los roles de usuario
 enum Role {
     ADMINISTRATOR
@@ -214,6 +237,10 @@ type Query {
     # Medical Notes
     getAllMedicalNotes: [MedicalNote]
     getMedicalNotesByMedicalRecord(medicalRecordId: Int!): [MedicalNote]
+    # Consults
+    getAllConsults: [Consult]
+    findConsultsByDoctor(doctorId: Int!): [Consult]
+    findConsultsByPatient(patientId: Int!): [Consult]
 }
 
 # Mutaciones (Mutations)
@@ -252,5 +279,10 @@ type Mutation {
     registerMedicalNote(medicalNoteInput: SaveMedicalNoteInput!): MedicalNote
     updateMedicalNote(medicalNoteId: Int!, medicalNoteInput: SaveMedicalNoteInput!): MedicalNote
     deleteMedicalNote(medicalNoteId: Int!): Boolean
+
+    # Consults
+    registerConsult(consultInput: SaveConsultInput!): Consult
+    updateConsult(consultId: Int!, consultInput: SaveConsultInput!): Consult
+    deleteConsult(consultId: Int!): Boolean
 
 }

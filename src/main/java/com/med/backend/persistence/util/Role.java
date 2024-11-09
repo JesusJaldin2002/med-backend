@@ -46,7 +46,14 @@ public enum Role {
             RolePermission.UPDATE_ONE_MEDICAL_NOTE,
             RolePermission.DELETE_ONE_MEDICAL_NOTE,
             RolePermission.FIND_ALL_MEDICAL_NOTES,
-            RolePermission.FIND_MEDICAL_NOTES_BY_MEDICAL_RECORD
+            RolePermission.FIND_MEDICAL_NOTES_BY_MEDICAL_RECORD,
+
+            RolePermission.CREATE_ONE_CONSULT,
+            RolePermission.UPDATE_ONE_CONSULT,
+            RolePermission.DELETE_ONE_CONSULT,
+            RolePermission.FIND_ALL_CONSULTS,
+            RolePermission.FIND_CONSULTS_BY_PATIENT,
+            RolePermission.FIND_CONSULTS_BY_DOCTOR
 
     )),
 
@@ -62,6 +69,12 @@ public enum Role {
             RolePermission.CREATE_ONE_MEDICAL_NOTE,
             RolePermission.UPDATE_ONE_MEDICAL_NOTE,
             RolePermission.FIND_MEDICAL_NOTES_BY_MEDICAL_RECORD,
+
+            // Consults
+            RolePermission.CREATE_ONE_CONSULT,
+            RolePermission.UPDATE_ONE_CONSULT,
+            RolePermission.FIND_CONSULTS_BY_DOCTOR,
+            RolePermission.FIND_CONSULTS_BY_PATIENT,
 
             RolePermission.READ_MY_PROFILE
     )),
