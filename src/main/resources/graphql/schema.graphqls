@@ -217,7 +217,7 @@ enum Role {
 # Consultas (Queries)
 type Query {
     # Users
-    validateToken(jwt: String!): Boolean
+    validateToken: Boolean
     findMyProfile: User
     findAllUsers: [User]
     # Doctors

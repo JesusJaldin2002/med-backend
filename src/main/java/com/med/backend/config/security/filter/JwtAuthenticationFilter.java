@@ -1,5 +1,6 @@
 package com.med.backend.config.security.filter;
 
+import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.entity.security.JwtToken;
 import com.med.backend.persistence.repository.security.JwtTokenRepository;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -35,43 +37,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Extraer el token JWT del encabezado de la solicitud
+        System.out.println("JOIN ON THE FILTER JwtAuthenticationFilter");
+        // 1. Obtain header named "Authorization"
+        // 2. Extract token JWT from header
         String jwt = jwtService.extractJwtFromRequest(request);
+        System.out.println("Extracted JWT: " + jwt);
 
         if (!StringUtils.hasText(jwt)) {
-            // No se encontró token en la solicitud, continuar sin autenticación
             filterChain.doFilter(request, response);
+            System.out.println("No JWT found in request header");
             return;
         }
 
-        // Verificar si el token es válido y no ha expirado
+        // 2.1. Obtain token not expired and valid from the database
         Optional<JwtToken> token = jwtTokenRepository.findByToken(jwt);
         boolean isValid = validateToken(token);
 
         if (!isValid) {
-            // Token no válido, continuar sin configurar el contexto de seguridad
+            System.out.println("JWT is not valid or not found in the system");
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Extraer el nombre de usuario del token JWT
+        // 3. Obtain the subject/username from the token and validate its format, signature, and expiration
         String username = jwtService.extractUsername(jwt);
+        System.out.println("JWT belongs to user: " + username);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Cargar los detalles del usuario y configurar la autenticación en el contexto
-            User user = userService.findOneByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("User not found. Username: " + username));
+        // 4. Set object Authentication in SecurityContextHolder
+        User user = userService.findOneByUsername(username)
+                .orElseThrow( () -> new RuntimeException("User not found. Username: " + username));
 
-            UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
 
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        authToken.setDetails(new WebAuthenticationDetails(request));
 
-            // Configurar la autenticación en el contexto de seguridad
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
+        SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        // Continuar con el filtro
+        // 5. Continue with the filter chain
+
         filterChain.doFilter(request, response);
     }
 
@@ -82,7 +86,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         JwtToken token = optionalJwtToken.get();
-        Date now = new Date();
+        Date now = new Date(System.currentTimeMillis());
+        System.out.println("Token expiration: " + token.getExpiration());
+        System.out.println("Current time: " + now);
+        System.out.println("Is token valid? " + token.isValid());
+        System.out.println("Has token expired? " + token.getExpiration().after(now));
 
         boolean isTokenValid = token.isValid();
         boolean isNotExpired = token.getExpiration().after(now);
@@ -103,6 +111,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         return isValid;
     }
+
 
     private void updateTokenStatus(JwtToken token) {
         token.setValid(false);

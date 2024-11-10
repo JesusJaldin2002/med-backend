@@ -63,7 +63,7 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
             logger.error("MethodArgumentNotValidException: {}", ex.getMessage());
         } else if (ex instanceof ObjectNotFoundException) {
             apiError.setHttpCode(HttpStatus.NOT_FOUND.value());
-            apiError.setMessage("El recurso solicitado no fue encontrado.");
+            apiError.setMessage("El recurso solicitado no fue encontrado, verifique los datos enviados.");
             apiError.setBackendMessage("Recurso no encontrado: " + ex.getMessage());
             logger.error("ObjectNotFoundException: {}", ex.getMessage());
         } else {

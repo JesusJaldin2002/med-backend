@@ -4,6 +4,7 @@ import com.med.backend.dto.auth.RegisteredUser;
 import com.med.backend.dto.user.SaveUser;
 import com.med.backend.dto.auth.AuthenticationRequest;
 import com.med.backend.dto.auth.AuthenticationResponse;
+import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.entity.security.JwtToken;
 import com.med.backend.persistence.repository.security.JwtTokenRepository;
@@ -68,9 +69,8 @@ public class AuthenticationService {
         // Busca el usuario por el identificador (username o email)
         Optional<User> optionalUser = userService.findOneByIdentifier(authRequest.getIdentifier());
         if (!optionalUser.isPresent()) {
-            throw new RuntimeException("User not found with identifier: " + authRequest.getIdentifier());
+            throw new ObjectNotFoundException("User", "identifier", authRequest.getIdentifier());
         }
-
         User user = optionalUser.get();
 
         // Crea el token de autenticación
@@ -93,23 +93,8 @@ public class AuthenticationService {
 
     public boolean validate(String jwt) {
         try {
-            String username = jwtService.extractUsername(jwt);
-            Optional<JwtToken> token = jwtTokenRepository.findByToken(jwt);
-
-            if (token.isPresent()) {
-                JwtToken jwtToken = token.get();
-
-                if (!jwtToken.isValid()) {
-                    return false;
-                }
-
-                if (jwtToken.getExpiration().before(new Date())) {
-                    return false; // Token ha expirado
-                }
-
-                return true;
-            }
-            return false;
+            jwtService.extractUsername(jwt);
+            return true;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             return false;

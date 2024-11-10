@@ -63,7 +63,7 @@ public class JwtService {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);
+            return authorizationHeader.substring(7).trim(); // Remove "Bearer " prefix and trim any whitespace
         }
 
         return null;
