@@ -14,6 +14,7 @@ type User {
 # Tipo para la respuesta de autenticación
 type AuthenticationResponse {
     jwt: String
+    role: String
 }
 
 # Tipo para la respuesta de registro
@@ -224,6 +225,7 @@ type Query {
     getAllDoctors: [DoctorUserDTO]
     # Patients
     getAllPatients: [PatientUserDTO]
+    getPatientWithUserById(patientId: Int!): PatientUserDTO
     # Schedules
     getAllSchedules: [Schedule]
     getSchedulesByDoctor(doctorId: Int!): [Schedule]

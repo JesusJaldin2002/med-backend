@@ -36,6 +36,12 @@ public class PatientController {
     }
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
+    @QueryMapping(name = "getPatientWithUserById")
+    public PatientUserDTO getPatientWithUserById(@Argument("patientId") int patientId) {
+        return patientService.getPatientWithUserById(patientId);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
     @MutationMapping(name = "updatePatient")
     public Patient updatePatient(@Argument("patientId") int patientId,
                                  @Argument("patientInput") @Valid UpdatePatientDTO updatedPatient,

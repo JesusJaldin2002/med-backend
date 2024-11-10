@@ -87,7 +87,8 @@ public class AuthenticationService {
         // Prepara la respuesta
         AuthenticationResponse authResponse = new AuthenticationResponse();
         authResponse.setJwt(jwt);
-
+        authResponse.setRole(user.getRole().name());
+        System.out.println("Authorities: " + user.getRole().name());
         return authResponse;
     }
 

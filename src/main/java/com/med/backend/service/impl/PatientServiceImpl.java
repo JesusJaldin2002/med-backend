@@ -116,6 +116,17 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public PatientUserDTO getPatientWithUserById(int patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ObjectNotFoundException("Patient not found with ID " + patientId));
+
+        User user = userService.findById(patient.getUserId())
+                .orElseThrow(() -> new ObjectNotFoundException("User not found for patient with ID " + patientId));
+
+        return new PatientUserDTO(patient, user);
+    }
+
+    @Override
     public void deletePatient(int patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ObjectNotFoundException("Patient not found"));
