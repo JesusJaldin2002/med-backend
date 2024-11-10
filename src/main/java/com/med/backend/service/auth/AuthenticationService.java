@@ -21,10 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AuthenticationService {
@@ -96,8 +93,23 @@ public class AuthenticationService {
 
     public boolean validate(String jwt) {
         try {
-            jwtService.extractUsername(jwt);
-            return true;
+            String username = jwtService.extractUsername(jwt);
+            Optional<JwtToken> token = jwtTokenRepository.findByToken(jwt);
+
+            if (token.isPresent()) {
+                JwtToken jwtToken = token.get();
+
+                if (!jwtToken.isValid()) {
+                    return false;
+                }
+
+                if (jwtToken.getExpiration().before(new Date())) {
+                    return false; // Token ha expirado
+                }
+
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             return false;
