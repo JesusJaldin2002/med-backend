@@ -115,6 +115,10 @@ public class AuthenticationService {
                     .orElseThrow(() -> new RuntimeException("User not found. Username: " + username));
         }
 
+        if (authentication != null && !(authentication.getPrincipal() instanceof UserDetails)) {
+            throw new RuntimeException("Unexpected Principal type: " + authentication.getPrincipal().getClass());
+        }
+
         throw new RuntimeException("No authenticated user found.");
     }
 
