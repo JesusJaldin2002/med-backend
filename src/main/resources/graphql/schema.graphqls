@@ -223,12 +223,14 @@ type Query {
     findAllUsers: [User]
     # Doctors
     getAllDoctors: [DoctorUserDTO]
+    getDoctorWithUserById(doctorId: Int!): DoctorUserDTO
     # Patients
     getAllPatients: [PatientUserDTO]
     getPatientWithUserById(patientId: Int!): PatientUserDTO
     # Schedules
     getAllSchedules: [Schedule]
     getSchedulesByDoctor(doctorId: Int!): [Schedule]
+    getScheduleById(scheduleId: Int!): Schedule
     # Appointments
     getAllAppointments: [Appointment]
     getAppointmentsByPatient(patientId: Int!): [Appointment]

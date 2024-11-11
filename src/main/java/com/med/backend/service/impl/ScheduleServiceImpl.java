@@ -43,7 +43,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         validateTimeOverlap(newSchedule.getDayOfWeek(), newSchedule.getDoctorId(), formattedStartTime, formattedEndTime, null);
 
         if (formattedStartTime.compareTo(formattedEndTime) >= 0) {
-            throw new IllegalArgumentException("Start time must be before end time.");
+            throw new IllegalArgumentException("La hora de inicio debe ser anterior a la hora de fin.");
+        }
+
+        if (newSchedule.getStartTime() == null || newSchedule.getEndTime() == null) {
+            throw new IllegalArgumentException("La hora de inicio y la hora de fin son obligatorias.");
+        }
+        if (newSchedule.getDoctorId() == null || newSchedule.getDoctorId() <= 0) {
+            throw new IllegalArgumentException("Debe proporcionarse un doctorId válido.");
         }
 
         Schedule schedule = new Schedule();
@@ -115,6 +122,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         return scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public Schedule getScheduleById(int scheduleId) {
+        return scheduleRepository.findById(scheduleId)
+                .orElseThrow(() -> new ObjectNotFoundException("Schedule not found"));
     }
 
     @Override

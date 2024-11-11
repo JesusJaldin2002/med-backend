@@ -43,6 +43,12 @@ public class DoctorController {
         return doctorService.updateDoctor(doctorId, updatedDoctor, updatedUser);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST')")
+    @QueryMapping(name = "getDoctorWithUserById")
+    public DoctorUserDTO getDoctorWithUserById(@Argument("doctorId") int doctorId) {
+        return doctorService.getDoctorWithUserById(doctorId);
+    }
+
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     @MutationMapping(name = "deleteDoctor")
     public void deleteDoctor(@Argument("doctorId") int doctorId) {

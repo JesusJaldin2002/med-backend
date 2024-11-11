@@ -13,4 +13,6 @@ public interface DoctorService {
     List<DoctorUserDTO> getAllDoctors();
     Doctor updateDoctor(int doctorId, UpdateDoctorDTO updatedDoctorData, SaveUser updatedUserData);
     void deleteDoctor(int doctorId);
+    DoctorUserDTO getDoctorWithUserById(int doctorId);
+
 }

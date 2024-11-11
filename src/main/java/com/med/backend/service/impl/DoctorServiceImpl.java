@@ -7,6 +7,7 @@ import com.med.backend.dto.user.SaveUser;
 import com.med.backend.exception.DuplicateResourceException;
 import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.Doctor;
+import com.med.backend.persistence.entity.Patient;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.repository.DoctorRepository;
 import com.med.backend.persistence.util.Role;
@@ -120,6 +121,17 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.deleteById(doctorId);
 
         userService.deleteById(doctor.getUserId());
+    }
+
+    @Override
+    public DoctorUserDTO getDoctorWithUserById(int doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new ObjectNotFoundException("Doctor not found with ID " + doctorId));
+
+        User user = userService.findById(doctor.getUserId())
+                .orElseThrow(() -> new ObjectNotFoundException("User not found for doctor with ID " + doctorId));
+
+        return new DoctorUserDTO(doctor, user);
     }
 
     private int autoIncrement() {

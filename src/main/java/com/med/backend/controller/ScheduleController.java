@@ -50,4 +50,10 @@ public class ScheduleController {
     public void deleteSchedule(@Argument("scheduleId") int scheduleId) {
         scheduleService.deleteSchedule(scheduleId);
     }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST', 'DOCTOR')")
+    @QueryMapping(name = "getScheduleById")
+    public Schedule getScheduleById(@Argument("scheduleId") int scheduleId) {
+        return scheduleService.getScheduleById(scheduleId);
+    }
 }
