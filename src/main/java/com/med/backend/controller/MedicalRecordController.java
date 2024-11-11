@@ -20,7 +20,7 @@ public class MedicalRecordController {
     @Autowired
     private MedicalRecordService medicalRecordService;
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST','DOCTOR')")
     @MutationMapping(name = "registerMedicalRecord")
     public MedicalRecord registerMedicalRecord(@Argument("medicalRecordInput") @Valid SaveMedicalRecordDTO newMedicalRecord) {
         return medicalRecordService.registerOneMedicalRecord(newMedicalRecord);
@@ -43,6 +43,12 @@ public class MedicalRecordController {
     public MedicalRecord updateMedicalRecord(@Argument("medicalRecordId") int medicalRecordId,
                                              @Argument("medicalRecordInput") @Valid UpdateMedicalRecordDTO updatedMedicalRecord) {
         return medicalRecordService.updateMedicalRecord(medicalRecordId, updatedMedicalRecord);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST','DOCTOR','PATIENT')")
+    @QueryMapping(name = "getMedicalRecordById")
+    public MedicalRecord getMedicalRecordById(@Argument("medicalRecordId") int medicalRecordId) {
+        return medicalRecordService.findMedicalRecordById(medicalRecordId);
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")

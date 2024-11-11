@@ -12,4 +12,5 @@ public interface MedicalRecordService {
     MedicalRecord updateMedicalRecord(int medicalRecordId, UpdateMedicalRecordDTO updatedMedicalRecord);
     void deleteMedicalRecord(int medicalRecordId);
     MedicalRecord findMedicalRecordByPatient(int patientId);
+    MedicalRecord findMedicalRecordById(int medicalRecordId);
 }

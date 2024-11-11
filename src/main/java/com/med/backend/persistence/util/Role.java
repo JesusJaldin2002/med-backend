@@ -58,13 +58,14 @@ public enum Role {
     )),
 
     DOCTOR(Arrays.asList(
+            RolePermission.FIND_ALL_PATIENTS,
 
             RolePermission.FIND_SCHEDULES_BY_DOCTOR,
 
             RolePermission.FIND_APPOINTMENTS_BY_DOCTOR,
 
             RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT,
-
+            RolePermission.CREATE_ONE_MEDICAL_RECORD,
             // Medical Notes
             RolePermission.CREATE_ONE_MEDICAL_NOTE,
             RolePermission.UPDATE_ONE_MEDICAL_NOTE,

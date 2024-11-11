@@ -109,6 +109,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .orElseThrow(() -> new ObjectNotFoundException("Medical record not found for the given patientId"));
     }
 
+    @Override
+    public MedicalRecord findMedicalRecordById(int medicalRecordId){
+        return medicalRecordRepository.findById(medicalRecordId)
+                .orElseThrow(() -> new ObjectNotFoundException("Medical record not found for the given medicalRecordId"));
+    }
+
     private int autoIncrement() {
         if (lastUsedMedicalRecordId == 0) {
             lastUsedMedicalRecordId = medicalRecordRepository.findAll().stream()
