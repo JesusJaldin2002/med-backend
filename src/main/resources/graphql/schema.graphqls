@@ -241,6 +241,7 @@ type Query {
     getMedicalRecordByPatient(patientId: Int!): MedicalRecord
     # Medical Notes
     getAllMedicalNotes: [MedicalNote]
+    getMedicalNoteById(medicalNoteId: Int!): MedicalNote
     getMedicalNotesByMedicalRecord(medicalRecordId: Int!): [MedicalNote]
     # Consults
     getAllConsults: [Consult]

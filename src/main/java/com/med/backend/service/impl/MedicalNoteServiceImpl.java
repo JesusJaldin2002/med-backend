@@ -77,6 +77,12 @@ public class MedicalNoteServiceImpl implements MedicalNoteService {
         return medicalNoteRepository.findByMedicalRecordId(medicalRecordId);
     }
 
+    @Override
+    public MedicalNote findMedicalNoteById(int medicalNoteId) {
+        return medicalNoteRepository.findById(medicalNoteId)
+                .orElseThrow(() -> new ObjectNotFoundException("Medical note not found"));
+    }
+
     private int autoIncrement() {
         if (lastUsedMedicalNoteId == 0) {
             lastUsedMedicalNoteId = medicalNoteRepository.findAll().stream()

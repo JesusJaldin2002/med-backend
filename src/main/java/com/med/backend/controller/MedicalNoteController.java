@@ -38,11 +38,17 @@ public class MedicalNoteController {
         return medicalNoteService.findMedicalNotesByMedicalRecordId(medicalRecordId);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'DOCTOR')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR')")
     @MutationMapping(name = "updateMedicalNote")
     public MedicalNote updateMedicalNote(@Argument("medicalNoteId") int medicalNoteId,
                                          @Argument("medicalNoteInput") @Valid UpdateMedicalNoteDTO updatedMedicalNote) {
         return medicalNoteService.updateMedicalNote(medicalNoteId, updatedMedicalNote);
+    }
+
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @QueryMapping(name = "getMedicalNoteById")
+    public MedicalNote getMedicalNoteById(@Argument("medicalNoteId") int medicalNoteId) {
+        return medicalNoteService.findMedicalNoteById(medicalNoteId);
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")
