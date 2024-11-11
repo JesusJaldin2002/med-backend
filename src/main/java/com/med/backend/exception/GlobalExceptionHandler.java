@@ -1,6 +1,6 @@
 package com.med.backend.exception;
 
-import com.med.backend.dto.ApiError;
+import com.med.backend.dto.auth.ApiError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

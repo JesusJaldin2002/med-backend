@@ -1,4 +1,4 @@
-package com.med.backend.dto;
+package com.med.backend.dto.auth;
 
 import java.io.Serializable;
 

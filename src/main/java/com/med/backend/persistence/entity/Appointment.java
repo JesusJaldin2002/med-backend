@@ -3,7 +3,9 @@ package com.med.backend.persistence.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Document(collection = "appointments") // Define la colección como "appointments" en MongoDB
 public class Appointment {
@@ -11,7 +13,8 @@ public class Appointment {
     @Id
     private int id;
 
-    private LocalDateTime date;
+    private String date;
+    private String time;
     private String status;
     private String reason;
 
@@ -23,9 +26,10 @@ public class Appointment {
     public Appointment() {}
 
     // Constructor con argumentos
-    public Appointment(int id, LocalDateTime date, String status, String reason, int patientId, int doctorId) {
+    public Appointment(int id, String date, String time, String status, String reason, int patientId, int doctorId) {
         this.id = id;
         this.date = date;
+        this.time = time;
         this.status = status;
         this.reason = reason;
         this.patientId = patientId;
@@ -40,12 +44,20 @@ public class Appointment {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getStatus() {

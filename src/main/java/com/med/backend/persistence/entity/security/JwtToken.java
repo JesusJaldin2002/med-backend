@@ -1,6 +1,7 @@
 package com.med.backend.persistence.entity.security;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,6 +17,7 @@ public class JwtToken {
     @Indexed(unique = true, background = true)
     private String token;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expiration;
 
     private boolean isValid;

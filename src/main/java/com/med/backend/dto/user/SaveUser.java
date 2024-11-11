@@ -1,5 +1,6 @@
-package com.med.backend.dto;
+package com.med.backend.dto.user;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class SaveUser implements Serializable {
     @Size(min = 8)
     private String password;
 
+    @Email(message = "Invalid email format")
     private String email;
 
     @Size(min = 8)

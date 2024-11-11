@@ -1,4 +1,4 @@
-package com.med.backend.dto;
+package com.med.backend.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

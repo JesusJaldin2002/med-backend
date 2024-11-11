@@ -1,6 +1,6 @@
 package com.med.backend.service.impl;
 
-import com.med.backend.dto.SaveUser;
+import com.med.backend.dto.user.SaveUser;
 import com.med.backend.exception.DuplicateResourceException;
 import com.med.backend.exception.InvalidPasswordException;
 import com.med.backend.persistence.entity.User;
@@ -26,6 +26,11 @@ public class UserServiceImpl implements UserService {
     private static int lastUsedId = 0;
 
     @Override
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
     public User registerOneCustomer(SaveUser newUser) {
 
         if (userRepository.findByUsername(newUser.getUsername()).isPresent()) {
@@ -48,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setName(newUser.getName());
         user.setUsername(newUser.getUsername());
         user.setEmail(newUser.getEmail());
-        user.setRole(Role.CUSTOMER);
+        user.setRole(Role.RECEPTIONIST);
         return userRepository.save(user);
     }
 
@@ -77,6 +82,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        userRepository.deleteById(id);
     }
 
     private int autoIncrement() {

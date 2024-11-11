@@ -1,6 +1,6 @@
 package com.med.backend.config.security.handler;
 
-import com.med.backend.dto.ApiError;
+import com.med.backend.dto.auth.ApiError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletException;

@@ -2,6 +2,7 @@ package com.med.backend.persistence.entity;
 
 import com.med.backend.persistence.util.Role;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,17 @@ public class User implements UserDetails {
     private String password;
 
     private Role role;
+
+    @Transient
+    private List<String> transientAuthorities;
+
+    public List<String> getTransientAuthorities() {
+        return transientAuthorities;
+    }
+
+    public void setTransientAuthorities(List<String> transientAuthorities) {
+        this.transientAuthorities = transientAuthorities;
+    }
 
     // Constructor sin argumentos
     public User() {}

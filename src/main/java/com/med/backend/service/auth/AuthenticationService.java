@@ -1,9 +1,10 @@
 package com.med.backend.service.auth;
 
-import com.med.backend.dto.RegisteredUser;
-import com.med.backend.dto.SaveUser;
+import com.med.backend.dto.auth.RegisteredUser;
+import com.med.backend.dto.user.SaveUser;
 import com.med.backend.dto.auth.AuthenticationRequest;
 import com.med.backend.dto.auth.AuthenticationResponse;
+import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.entity.security.JwtToken;
 import com.med.backend.persistence.repository.security.JwtTokenRepository;
@@ -18,10 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AuthenticationService {
@@ -68,9 +69,8 @@ public class AuthenticationService {
         // Busca el usuario por el identificador (username o email)
         Optional<User> optionalUser = userService.findOneByIdentifier(authRequest.getIdentifier());
         if (!optionalUser.isPresent()) {
-            throw new RuntimeException("User not found with identifier: " + authRequest.getIdentifier());
+            throw new ObjectNotFoundException("User", "identifier", authRequest.getIdentifier());
         }
-
         User user = optionalUser.get();
 
         // Crea el token de autenticación
@@ -87,7 +87,8 @@ public class AuthenticationService {
         // Prepara la respuesta
         AuthenticationResponse authResponse = new AuthenticationResponse();
         authResponse.setJwt(jwt);
-
+        authResponse.setRole(user.getRole().name());
+        System.out.println("Authorities: " + user.getRole().name());
         return authResponse;
     }
 
@@ -104,6 +105,10 @@ public class AuthenticationService {
     public User findLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        if (authentication != null) {
+            System.out.println("Authorities: " + authentication.getAuthorities());
+        }
+
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             return userService.findOneByUsername(username)
@@ -114,16 +119,17 @@ public class AuthenticationService {
     }
 
 
-    public void logout(HttpServletRequest request) {
-
+    public void logout() {
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         String jwt = jwtService.extractJwtFromRequest(request);
+
         if (!StringUtils.hasText(jwt)) {
-            return;
+            throw new RuntimeException("Missing or invalid Authorization header");
         }
 
         Optional<JwtToken> token = jwtTokenRepository.findByToken(jwt);
 
-        if (token.isPresent()  && token.get().isValid()) {
+        if (token.isPresent() && token.get().isValid()) {
             token.get().setValid(false);
             jwtTokenRepository.save(token.get());
         }

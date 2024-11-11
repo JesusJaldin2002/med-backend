@@ -1,4 +1,4 @@
-package com.med.backend.dto;
+package com.med.backend.dto.auth;
 
 import com.med.backend.persistence.util.Role;
 
@@ -13,6 +13,9 @@ public class RegisteredUser implements Serializable {
 
     private Role role;
     private String jwt;
+
+    public RegisteredUser() {
+    }
 
     public int getId() {
         return id;

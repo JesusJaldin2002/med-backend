@@ -5,6 +5,15 @@ import java.io.Serializable;
 public class AuthenticationResponse implements Serializable {
 
     private String jwt;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getJwt() {
         return jwt;
