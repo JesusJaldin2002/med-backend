@@ -29,7 +29,7 @@ public class PatientController {
         return patientService.registerOnePatient(newPatient, newUser);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST','DOCTOR')")
     @QueryMapping(name = "getAllPatients")
     public List<PatientUserDTO> getAllPatients() {
         return patientService.getAllPatients();

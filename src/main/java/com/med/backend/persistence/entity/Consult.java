@@ -15,6 +15,8 @@ public class Consult {
     private String observations;
     private Double currentWeight;
     private Double currentHeight;
+    private String attentionTime; // Nueva propiedad para la hora de atención
+
 
     // Llave foránea para la relación con MedicalRecord
     private int medicalRecordId;
@@ -24,8 +26,10 @@ public class Consult {
 
     public Consult() {}
 
+    // Modificar el constructor para incluir el nuevo campo
     public Consult(int id, String date, String diagnosis, String treatment, String observations,
-                   Double currentWeight, Double currentHeight, int medicalRecordId, int appointmentId) {
+                   Double currentWeight, Double currentHeight, int medicalRecordId, int appointmentId,
+                   String attentionTime) {
         this.id = id;
         this.date = date;
         this.diagnosis = diagnosis;
@@ -35,6 +39,7 @@ public class Consult {
         this.currentHeight = currentHeight;
         this.medicalRecordId = medicalRecordId;
         this.appointmentId = appointmentId;
+        this.attentionTime = attentionTime; // Inicialización del nuevo campo
     }
 
     public int getId() {
@@ -103,6 +108,14 @@ public class Consult {
 
     public int getAppointmentId() {
         return appointmentId;
+    }
+
+    public String getAttentionTime() {
+        return attentionTime;
+    }
+
+    public void setAttentionTime(String attentionTime) {
+        this.attentionTime = attentionTime;
     }
 
     public void setAppointmentId(int appointmentId) {

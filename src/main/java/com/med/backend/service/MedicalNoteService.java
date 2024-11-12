@@ -12,4 +12,5 @@ public interface MedicalNoteService {
     MedicalNote updateMedicalNote(int medicalNoteId, UpdateMedicalNoteDTO updatedMedicalNote);
     void deleteMedicalNote(int medicalNoteId);
     List<MedicalNote> findMedicalNotesByMedicalRecordId(int medicalRecordId);
+    MedicalNote findMedicalNoteById(int medicalNoteId);
 }

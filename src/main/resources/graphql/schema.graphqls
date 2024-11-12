@@ -13,8 +13,10 @@ type User {
 
 # Tipo para la respuesta de autenticación
 type AuthenticationResponse {
-    jwt: String
-    role: String
+    jwt: String!
+    role: String!
+    doctorId: Int
+    patientId: Int
 }
 
 # Tipo para la respuesta de registro
@@ -127,6 +129,7 @@ type Consult {
     currentHeight: Float
     medicalRecordId: Int
     appointmentId: Int
+    attentionTime: String
 }
 
 # Entrada para la solicitud de autenticación
@@ -205,6 +208,7 @@ input SaveConsultInput {
     currentWeight: Float
     currentHeight: Float
     appointmentId: Int
+    attentionTime: String
 }
 
 # Enum para los roles de usuario
@@ -237,9 +241,11 @@ type Query {
     getAppointmentsByDoctor(doctorId: Int!): [Appointment]
     # Medical Records
     getAllMedicalRecords: [MedicalRecord]
+    getMedicalRecordById(medicalRecordId: Int!): MedicalRecord
     getMedicalRecordByPatient(patientId: Int!): MedicalRecord
     # Medical Notes
     getAllMedicalNotes: [MedicalNote]
+    getMedicalNoteById(medicalNoteId: Int!): MedicalNote
     getMedicalNotesByMedicalRecord(medicalRecordId: Int!): [MedicalNote]
     # Consults
     getAllConsults: [Consult]

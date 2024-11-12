@@ -2,7 +2,7 @@ package com.med.backend.dto.consult;
 
 public class UpdateConsultDTO {
 
-    private String date; // Ahora es String
+    private String date;
     private String diagnosis;
     private String treatment;
     private String observations;
@@ -10,6 +10,9 @@ public class UpdateConsultDTO {
     private Double currentHeight;
     private Integer medicalRecordId;
     private Integer appointmentId;
+
+    // Nuevo campo para la hora de atención
+    private String attentionTime;
 
     // Getters and Setters
     public String getDate() {
@@ -74,5 +77,13 @@ public class UpdateConsultDTO {
 
     public void setAppointmentId(Integer appointmentId) {
         this.appointmentId = appointmentId;
+    }
+
+    public String getAttentionTime() {
+        return attentionTime;
+    }
+
+    public void setAttentionTime(String attentionTime) {
+        this.attentionTime = attentionTime;
     }
 }

@@ -7,6 +7,8 @@ import com.med.backend.dto.auth.AuthenticationResponse;
 import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.entity.security.JwtToken;
+import com.med.backend.persistence.repository.DoctorRepository;
+import com.med.backend.persistence.repository.PatientRepository;
 import com.med.backend.persistence.repository.security.JwtTokenRepository;
 import com.med.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +40,12 @@ public class AuthenticationService {
 
     @Autowired
     private JwtTokenRepository jwtTokenRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     public RegisteredUser registerOneCustomer(SaveUser newUser) {
         User user = userService.registerOneCustomer(newUser);
@@ -75,7 +83,7 @@ public class AuthenticationService {
 
         // Crea el token de autenticación
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                user.getUsername(), // Username es obligatorio en Spring Security
+                user.getUsername(),
                 authRequest.getPassword()
         );
         authenticationManager.authenticate(authentication);
@@ -88,9 +96,16 @@ public class AuthenticationService {
         AuthenticationResponse authResponse = new AuthenticationResponse();
         authResponse.setJwt(jwt);
         authResponse.setRole(user.getRole().name());
-        System.out.println("Authorities: " + user.getRole().name());
+
+        // Verifica si el usuario es un Doctor y establece el doctorId
+        doctorRepository.findByUserId(user.getId()).ifPresent(doctor -> authResponse.setDoctorId(doctor.getId()));
+        // Verifica si el usuario es un Paciente y establece el patientId
+        patientRepository.findByUserId(user.getId()).ifPresent(patient -> authResponse.setPatientId(patient.getId()));
+
+
         return authResponse;
     }
+
 
     public boolean validate(String jwt) {
         try {
@@ -113,6 +128,10 @@ public class AuthenticationService {
             String username = ((UserDetails) authentication.getPrincipal()).getUsername();
             return userService.findOneByUsername(username)
                     .orElseThrow(() -> new RuntimeException("User not found. Username: " + username));
+        }
+
+        if (authentication != null && !(authentication.getPrincipal() instanceof UserDetails)) {
+            throw new RuntimeException("Unexpected Principal type: " + authentication.getPrincipal().getClass());
         }
 
         throw new RuntimeException("No authenticated user found.");

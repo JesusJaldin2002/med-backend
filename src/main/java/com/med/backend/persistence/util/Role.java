@@ -41,12 +41,14 @@ public enum Role {
             RolePermission.DELETE_ONE_MEDICAL_RECORD,
             RolePermission.FIND_ALL_MEDICAL_RECORDS,
             RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT,
+            RolePermission.FIND_MEDICAL_RECORD_BY_ID,
 
             RolePermission.CREATE_ONE_MEDICAL_NOTE,
             RolePermission.UPDATE_ONE_MEDICAL_NOTE,
             RolePermission.DELETE_ONE_MEDICAL_NOTE,
             RolePermission.FIND_ALL_MEDICAL_NOTES,
             RolePermission.FIND_MEDICAL_NOTES_BY_MEDICAL_RECORD,
+            RolePermission.FIND_MEDICAL_NOTE_BY_ID,
 
             RolePermission.CREATE_ONE_CONSULT,
             RolePermission.UPDATE_ONE_CONSULT,
@@ -58,16 +60,16 @@ public enum Role {
     )),
 
     DOCTOR(Arrays.asList(
+            RolePermission.FIND_ALL_PATIENTS,
 
             RolePermission.FIND_SCHEDULES_BY_DOCTOR,
 
             RolePermission.FIND_APPOINTMENTS_BY_DOCTOR,
 
             RolePermission.FIND_MEDICAL_RECORDS_BY_PATIENT,
-
+            RolePermission.CREATE_ONE_MEDICAL_RECORD,
             // Medical Notes
             RolePermission.CREATE_ONE_MEDICAL_NOTE,
-            RolePermission.UPDATE_ONE_MEDICAL_NOTE,
             RolePermission.FIND_MEDICAL_NOTES_BY_MEDICAL_RECORD,
 
             // Consults

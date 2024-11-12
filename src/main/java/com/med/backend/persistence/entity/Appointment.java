@@ -3,9 +3,6 @@ package com.med.backend.persistence.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Document(collection = "appointments") // Define la colección como "appointments" en MongoDB
 public class Appointment {
