@@ -109,6 +109,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.findByDoctorId(doctorId);
     }
 
+    @Override
+    public Appointment getAppointmentById(int appointmentId) {
+        Optional<Appointment> appointment = appointmentRepository.findById(appointmentId);
+        return appointment.orElseThrow(() -> new RuntimeException("Appointment not found with ID: " + appointmentId));
+    }
+
     private int autoIncrement() {
         if (lastUsedAppointmentId == 0) {
             lastUsedAppointmentId = appointmentRepository.findAll().stream()

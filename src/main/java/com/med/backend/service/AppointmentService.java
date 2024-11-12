@@ -18,4 +18,8 @@ public interface AppointmentService {
     List<Appointment> getAllByPatient(int patientId);
 
     List<Appointment> getAllByDoctor(int doctorId);
+
+    Appointment getAppointmentById(int appointmentId);
+
+
 }

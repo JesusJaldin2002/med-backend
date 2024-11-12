@@ -2,8 +2,11 @@ package com.med.backend.controller;
 
 import com.med.backend.dto.appointment.SaveAppointmentDTO;
 import com.med.backend.dto.appointment.UpdateAppointmentDTO;
+import com.med.backend.dto.appointmentStatistics.AppointmentStatisticsDTO;
 import com.med.backend.persistence.entity.Appointment;
 import com.med.backend.service.AppointmentService;
+import com.med.backend.service.DoctorService;
+import com.med.backend.service.Webhook.AppointmentStatisticsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -20,10 +23,32 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @Autowired
+    private AppointmentStatisticsService appointmentStatisticsService;
+
+     @Autowired
+    private DoctorService doctorService;
+
+
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
     @MutationMapping(name = "registerAppointment")
     public Appointment registerAppointment(@Argument("appointmentInput") @Valid SaveAppointmentDTO newAppointment) {
-        return appointmentService.registerOneAppointment(newAppointment);
+        //  return appointmentService.registerOneAppointment(newAppointment);
+
+        Appointment appointment = appointmentService.registerOneAppointment(newAppointment);
+
+        // Preparar estadísticas diarias iniciales al registrar una cita
+        AppointmentStatisticsDTO statistics = new AppointmentStatisticsDTO();
+        statistics.setId(String.valueOf(appointment.getId()));
+        statistics.setDoctorId(String.valueOf(appointment.getDoctorId()));
+        statistics.setDoctorName(doctorService.getDoctorWithUserById(appointment.getDoctorId()).getName());
+        statistics.setDate(appointment.getDate().toString());
+        statistics.setTotalAppointments(1);
+
+        // Enviar estadísticas sin completar ni cancelar aún
+        appointmentStatisticsService.sendDailyAppointmentStatistics(statistics);
+
+        return appointment;
     }
 
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
