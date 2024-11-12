@@ -22,6 +22,9 @@ public class SaveConsultDTO {
     @NotNull(message = "Appointment ID is required")
     private Integer appointmentId;
 
+    // Nuevo campo para la hora de atención
+    private String attentionTime;
+
     // Getters and Setters
     public String getDate() {
         return date;
@@ -86,4 +89,14 @@ public class SaveConsultDTO {
     public void setAppointmentId(Integer appointmentId) {
         this.appointmentId = appointmentId;
     }
+
+    public String getAttentionTime() {
+        return attentionTime;
+    }
+
+    public void setAttentionTime(String attentionTime) {
+        this.attentionTime = attentionTime;
+    }
+
+
 }

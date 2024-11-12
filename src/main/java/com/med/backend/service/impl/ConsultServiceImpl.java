@@ -65,6 +65,9 @@ public class ConsultServiceImpl implements ConsultService {
         consult.setMedicalRecordId(medicalRecord.getId());
         consult.setAppointmentId(newConsult.getAppointmentId());
 
+        // Nuevo campo de hora de atención (si es proporcionado)
+        consult.setAttentionTime(newConsult.getAttentionTime() != null ? newConsult.getAttentionTime() : "");
+
         return consultRepository.save(consult);
     }
 
@@ -96,6 +99,11 @@ public class ConsultServiceImpl implements ConsultService {
         }
         if (updatedConsultData.getCurrentHeight() != null) {
             consult.setCurrentHeight(updatedConsultData.getCurrentHeight());
+        }
+
+        // Actualizar el nuevo campo attentionTime
+        if (updatedConsultData.getAttentionTime() != null) {
+            consult.setAttentionTime(updatedConsultData.getAttentionTime());
         }
 
         // No permitimos cambiar el medicalRecordId o appointmentId

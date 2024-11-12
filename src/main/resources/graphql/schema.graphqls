@@ -129,6 +129,7 @@ type Consult {
     currentHeight: Float
     medicalRecordId: Int
     appointmentId: Int
+    attentionTime: String
 }
 
 # Entrada para la solicitud de autenticación
@@ -207,6 +208,7 @@ input SaveConsultInput {
     currentWeight: Float
     currentHeight: Float
     appointmentId: Int
+    attentionTime: String
 }
 
 # Enum para los roles de usuario
