@@ -13,8 +13,10 @@ type User {
 
 # Tipo para la respuesta de autenticación
 type AuthenticationResponse {
-    jwt: String
-    role: String
+    jwt: String!
+    role: String!
+    doctorId: Int
+    patientId: Int
 }
 
 # Tipo para la respuesta de registro
