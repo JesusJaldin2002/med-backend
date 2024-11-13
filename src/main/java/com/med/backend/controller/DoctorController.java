@@ -1,5 +1,6 @@
 package com.med.backend.controller;
 
+import com.med.backend.dto.doctor.DoctorWithScheduleDTO;
 import com.med.backend.dto.doctor.UpdateDoctorDTO;
 import com.med.backend.dto.doctor.saveDoctorDto;
 import com.med.backend.dto.doctor.DoctorUserDTO;
@@ -47,6 +48,12 @@ public class DoctorController {
     @QueryMapping(name = "getDoctorWithUserById")
     public DoctorUserDTO getDoctorWithUserById(@Argument("doctorId") int doctorId) {
         return doctorService.getDoctorWithUserById(doctorId);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST')")
+    @QueryMapping(name = "getAllDoctorsWithSchedules")
+    public List<DoctorWithScheduleDTO> getAllDoctorsWithSchedules() {
+        return doctorService.getAllDoctorsWithSchedules();
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")

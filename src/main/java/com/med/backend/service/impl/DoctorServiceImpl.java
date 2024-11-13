@@ -1,15 +1,19 @@
 package com.med.backend.service.impl;
 
+import com.med.backend.dto.doctor.DoctorWithScheduleDTO;
 import com.med.backend.dto.doctor.UpdateDoctorDTO;
 import com.med.backend.dto.doctor.saveDoctorDto;
 import com.med.backend.dto.doctor.DoctorUserDTO;
+import com.med.backend.dto.schedule.SaveScheduleDTO;
 import com.med.backend.dto.user.SaveUser;
 import com.med.backend.exception.DuplicateResourceException;
 import com.med.backend.exception.ObjectNotFoundException;
 import com.med.backend.persistence.entity.Doctor;
 import com.med.backend.persistence.entity.Patient;
+import com.med.backend.persistence.entity.Schedule;
 import com.med.backend.persistence.entity.User;
 import com.med.backend.persistence.repository.DoctorRepository;
+import com.med.backend.persistence.repository.ScheduleRepository;
 import com.med.backend.persistence.util.Role;
 import com.med.backend.service.DoctorService;
 import com.med.backend.service.UserService;
@@ -31,6 +35,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     private static int lastUsedDoctorId = 0;
 
@@ -132,6 +139,33 @@ public class DoctorServiceImpl implements DoctorService {
                 .orElseThrow(() -> new ObjectNotFoundException("User not found for doctor with ID " + doctorId));
 
         return new DoctorUserDTO(doctor, user);
+    }
+
+    @Override
+    public List<DoctorWithScheduleDTO> getAllDoctorsWithSchedules() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors.stream()
+                .map(doctor -> {
+                    User user = userService.findById(doctor.getUserId())
+                            .orElseThrow(() -> new ObjectNotFoundException("User not found for doctor with ID " + doctor.getId()));
+                    DoctorUserDTO doctorUserDTO = new DoctorUserDTO(doctor, user);
+
+                    // Obtener los horarios del doctor
+                    List<Schedule> schedules = scheduleRepository.findByDoctorId(doctor.getId());
+                    List<SaveScheduleDTO> scheduleDTOs = schedules.stream()
+                            .map(schedule -> {
+                                SaveScheduleDTO dto = new SaveScheduleDTO();
+                                dto.setDayOfWeek(schedule.getDayOfWeek());
+                                dto.setStartTime(schedule.getStartTime());
+                                dto.setEndTime(schedule.getEndTime());
+                                dto.setDoctorId(schedule.getDoctorId());
+                                return dto;
+                            })
+                            .collect(Collectors.toList());
+
+                    return new DoctorWithScheduleDTO(doctorUserDTO, scheduleDTOs);
+                })
+                .collect(Collectors.toList());
     }
 
     private int autoIncrement() {

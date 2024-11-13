@@ -132,6 +132,18 @@ type Consult {
     attentionTime: String
 }
 
+type DoctorWithScheduleDTO {
+    idDoctor: Int
+    name: String
+    username: String
+    email: String
+    specialty: String
+    licenseNumber: String
+    phone: String
+    idUser: Int
+    schedules: [Schedule]
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -228,6 +240,7 @@ type Query {
     # Doctors
     getAllDoctors: [DoctorUserDTO]
     getDoctorWithUserById(doctorId: Int!): DoctorUserDTO
+    getAllDoctorsWithSchedules: [DoctorWithScheduleDTO]
     # Patients
     getAllPatients: [PatientUserDTO]
     getPatientWithUserById(patientId: Int!): PatientUserDTO
