@@ -35,7 +35,7 @@ public class PatientController {
         return patientService.getAllPatients();
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST','PATIENT','DOCTOR')")
     @QueryMapping(name = "getPatientWithUserById")
     public PatientUserDTO getPatientWithUserById(@Argument("patientId") int patientId) {
         return patientService.getPatientWithUserById(patientId);

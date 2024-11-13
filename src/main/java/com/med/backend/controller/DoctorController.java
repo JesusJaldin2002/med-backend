@@ -44,7 +44,7 @@ public class DoctorController {
         return doctorService.updateDoctor(doctorId, updatedDoctor, updatedUser);
     }
 
-    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST')")
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST','PATIENT','DOCTOR')")
     @QueryMapping(name = "getDoctorWithUserById")
     public DoctorUserDTO getDoctorWithUserById(@Argument("doctorId") int doctorId) {
         return doctorService.getDoctorWithUserById(doctorId);
