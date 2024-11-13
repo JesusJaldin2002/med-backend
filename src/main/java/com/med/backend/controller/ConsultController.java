@@ -41,28 +41,28 @@ public class ConsultController {
     @PreAuthorize("hasAnyRole('ADMINISTRATOR','DOCTOR')")
     @MutationMapping(name = "registerConsult")
     public Consult registerConsult(@Argument("consultInput") @Valid SaveConsultDTO newConsult) {
-          return consultService.registerOneConsult(newConsult);
-        //  Consult consult = consultService.registerOneConsult(newConsult);
+        //   return consultService.registerOneConsult(newConsult);
+         Consult consult = consultService.registerOneConsult(newConsult);
 
-        // // Obtener la cita asociada
-        // Appointment appointment = appointmentService.getAppointmentById(consult.getAppointmentId());
+        // Obtener la cita asociada
+        Appointment appointment = appointmentService.getAppointmentById(consult.getAppointmentId());
 
-        // // Calcular tiempo de espera
-        // LocalDateTime scheduledTime = LocalDateTime.parse(appointment.getTime()); // Asegúrate de que está en formato HH:mm
-        // // LocalDateTime consultTime = LocalDateTime.parse(consult.get()); // Asegúrate de que está en formato HH:mm
-        // // long waitTimeMinutes = Duration.between(scheduledTime,consultTime).toMinutes();
+        // Calcular tiempo de espera
+        LocalTime scheduledTime = LocalTime.parse(appointment.getTime()); // Asegúrate de que está en formato HH:mm
+        LocalTime consultTime = LocalTime.parse(consult.getAttentionTime()); // Asegúrate de que está en formato HH:mm
+        long waitTimeMinutes = Duration.between(scheduledTime,consultTime).toMinutes();
 
-        // // Preparar estadísticas de cita completada
-        // AppointmentStatisticsDTO statistics = new AppointmentStatisticsDTO();
-        // statistics.setDoctorId(String.valueOf(appointment.getId()));
-        // statistics.setDoctorName(doctorService.getDoctorWithUserById(appointment.getDoctorId()).getName());
-        // statistics.setDate(appointment.getDate().toString());
-        // statistics.setCompletedAppointments(1);
-        // statistics.setAverageWaitTime(waitTimeMinutes);
+        // Preparar estadísticas de cita completada
+        AppointmentStatisticsDTO statistics = new AppointmentStatisticsDTO();
+        statistics.setDoctorId(String.valueOf(appointment.getDoctorId()));
+        statistics.setDoctorName(doctorService.getDoctorWithUserById(appointment.getDoctorId()).getName());
+        statistics.setDate(appointment.getDate().toString());
+        statistics.setCompletedAppointments(1);
+        statistics.setAverageWaitTime(waitTimeMinutes);
 
-        // appointmentStatisticsService.sendDailyAppointmentStatistics(statistics);
+        appointmentStatisticsService.sendDailyAppointmentStatistics(statistics);
 
-        // return consult;
+        return consult;
     }
 
     @PreAuthorize("hasRole('ADMINISTRATOR')")

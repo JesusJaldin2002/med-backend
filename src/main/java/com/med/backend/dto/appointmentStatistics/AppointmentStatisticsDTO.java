@@ -1,5 +1,7 @@
 package com.med.backend.dto.appointmentStatistics;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 // import java.time.LocalDateTime;
 
 public class AppointmentStatisticsDTO {

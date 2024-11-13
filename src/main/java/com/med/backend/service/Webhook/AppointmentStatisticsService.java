@@ -1,6 +1,7 @@
 package com.med.backend.service.Webhook;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.med.backend.dto.appointmentStatistics.AppointmentStatisticsDTO;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,17 @@ public class AppointmentStatisticsService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<AppointmentStatisticsDTO> request = new HttpEntity<>(statistics, headers);
-        restTemplate.postForEntity(djangoUrl, request, String.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String jsond = objectMapper.writeValueAsString(statistics);
+            System.out.println("JSON result: " + jsond);
+            HttpEntity<String> request = new HttpEntity<>(jsond, headers);
+            System.out.println("Request a enviar: " + request);
+            restTemplate.postForEntity(djangoUrl, request, String.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
     }
 }
