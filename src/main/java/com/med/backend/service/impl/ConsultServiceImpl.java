@@ -52,7 +52,7 @@ public class ConsultServiceImpl implements ConsultService {
                 .orElseThrow(() -> new ObjectNotFoundException("Medical record not found for the given patientId: " + patientId));
 
         // Usar la fecha actual
-        String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         Consult consult = new Consult();
         consult.setId(autoIncrement());
