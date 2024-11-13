@@ -11,5 +11,7 @@ public interface ConsultRepository extends MongoRepository<Consult, Integer> {
 
     Optional<Object> findByAppointmentId(Integer appointmentId);
     List<Consult> findByAppointmentIdIn(List<Integer> appointmentIds);
+    Optional<Consult> findConsultByAppointmentId(Integer appointmentId);
+
 
 }

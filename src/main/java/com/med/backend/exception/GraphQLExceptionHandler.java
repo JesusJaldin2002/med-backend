@@ -85,10 +85,12 @@ public class GraphQLExceptionHandler extends DataFetcherExceptionResolverAdapter
             apiError.setBackendMessage("Argumento no válido: " + ex.getMessage());
             logger.error("MethodArgumentNotValidException: {}", ex.getMessage());
         } else if (ex instanceof ObjectNotFoundException) {
+            ObjectNotFoundException objectNotFoundException = (ObjectNotFoundException) ex;
             apiError.setHttpCode(HttpStatus.NOT_FOUND.value());
-            apiError.setMessage("El recurso solicitado no fue encontrado, verifique los datos enviados.");
-            apiError.setBackendMessage("Recurso no encontrado: " + ex.getMessage());
-            logger.error("ObjectNotFoundException: {}", ex.getMessage());
+            // Usar el mensaje de la excepción directamente para el frontend
+            apiError.setMessage(objectNotFoundException.getMessage());
+            apiError.setBackendMessage("Recurso no encontrado: " + objectNotFoundException.getMessage());
+            logger.error("ObjectNotFoundException: {}", objectNotFoundException.getMessage());
         } else if (ex instanceof ConstraintViolationException) {
             ConstraintViolationException validationException = (ConstraintViolationException) ex;
             String errors = validationException.getConstraintViolations().stream()

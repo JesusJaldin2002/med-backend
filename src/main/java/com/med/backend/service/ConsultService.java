@@ -14,4 +14,6 @@ public interface ConsultService {
     List<Consult> findConsultsByMedicalRecordId(int medicalRecordId);
     List<Consult> findConsultsByDoctor(int doctorId);
     List<Consult> findConsultsByPatient(int patientId);
+
+    Consult findConsultByAppointment(int appointmentId);
 }

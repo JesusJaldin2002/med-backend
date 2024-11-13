@@ -51,6 +51,12 @@ public class ConsultController {
         return consultService.findConsultsByDoctor(doctorId);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'DOCTOR','RECEPTIONIST')")
+    @QueryMapping(name = "findConsultsByAppointment")
+    public Consult findConsultsByAppointment(@Argument("appointmentId") int appointmentId) {
+        return consultService.findConsultByAppointment(appointmentId);
+    }
+
     @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'DOCTOR', 'PATIENT')")
     @QueryMapping(name = "findConsultsByPatient")
     public List<Consult> findConsultsByPatient(@Argument("patientId") int patientId) {

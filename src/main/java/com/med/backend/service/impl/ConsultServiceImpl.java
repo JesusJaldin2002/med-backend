@@ -13,6 +13,7 @@ import com.med.backend.persistence.repository.MedicalRecordRepository;
 import com.med.backend.service.ConsultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,8 +34,15 @@ public class ConsultServiceImpl implements ConsultService {
     private static int lastUsedConsultId = 0;
 
     @Override
+    public Consult findConsultByAppointment(int appointmentId) {
+        return consultRepository.findConsultByAppointmentId(appointmentId)
+                .orElseThrow(() -> new ObjectNotFoundException("No consult found for the given appointmentId: " + appointmentId));
+    }
+
+    @Override
     public Consult registerOneConsult(SaveConsultDTO newConsult) {
-        Appointment appointment = validateAppointmentExistence(newConsult.getAppointmentId());
+        Appointment appointment = appointmentRepository.findById(newConsult.getAppointmentId())
+                .orElseThrow(() -> new ObjectNotFoundException("Appointment not found for the given appointmentId: " + newConsult.getAppointmentId()));
 
         // Verificar si ya existe un consult asociado al appointment
         if (consultRepository.findByAppointmentId(newConsult.getAppointmentId()).isPresent()) {
@@ -49,7 +57,11 @@ public class ConsultServiceImpl implements ConsultService {
         // Obtener el medicalRecordId a partir del patientId del appointment
         int patientId = appointment.getPatientId();
         MedicalRecord medicalRecord = medicalRecordRepository.findByPatientId(patientId)
-                .orElseThrow(() -> new ObjectNotFoundException("Medical record not found for the given patientId: " + patientId));
+                .orElseThrow(() -> new ObjectNotFoundException(
+                        "No se encontró una historia clínica para el " +
+                                "paciente con ID: " + patientId + ". " +
+                                "Por favor, cree una historia clínica para este paciente antes de proceder.")
+                );
 
         // Usar la fecha actual
         String currentDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -68,7 +80,14 @@ public class ConsultServiceImpl implements ConsultService {
         // Nuevo campo de hora de atención (si es proporcionado)
         consult.setAttentionTime(newConsult.getAttentionTime() != null ? newConsult.getAttentionTime() : "");
 
-        return consultRepository.save(consult);
+        // Guardar la consulta
+        Consult savedConsult = consultRepository.save(consult);
+
+        // Actualizar el estado del appointment a "COMPLETE"
+        appointment.setStatus("complete");
+        appointmentRepository.save(appointment);
+
+        return savedConsult;
     }
 
 

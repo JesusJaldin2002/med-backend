@@ -56,4 +56,16 @@ public class AppointmentController {
     public List<Appointment> getAppointmentsByDoctor(@Argument("doctorId") int doctorId) {
         return appointmentService.getAllByDoctor(doctorId);
     }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'RECEPTIONIST', 'DOCTOR')")
+    @QueryMapping(name = "getAppointmentById")
+    public Appointment getAppointmentById(@Argument("appointmentId") int appointmentId) {
+        return appointmentService.getAppointmentById(appointmentId);
+    }
+
+    @MutationMapping(name = "updateAppointmentStatus")
+    public Appointment updateAppointmentStatus(@Argument("appointmentId") int appointmentId,
+                                              @Argument("status") String status) {
+        return appointmentService.updateAppointmentStatus(appointmentId, status);
+    }
 }

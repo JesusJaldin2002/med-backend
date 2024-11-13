@@ -239,6 +239,7 @@ type Query {
     getAllAppointments: [Appointment]
     getAppointmentsByPatient(patientId: Int!): [Appointment]
     getAppointmentsByDoctor(doctorId: Int!): [Appointment]
+    getAppointmentById(appointmentId: Int!): Appointment
     # Medical Records
     getAllMedicalRecords: [MedicalRecord]
     getMedicalRecordById(medicalRecordId: Int!): MedicalRecord
@@ -251,6 +252,7 @@ type Query {
     getAllConsults: [Consult]
     findConsultsByDoctor(doctorId: Int!): [Consult]
     findConsultsByPatient(patientId: Int!): [Consult]
+    findConsultsByAppointment(appointmentId: Int!): Consult
 }
 
 # Mutaciones (Mutations)
@@ -279,6 +281,7 @@ type Mutation {
     registerAppointment(appointmentInput: SaveAppointmentInput!): Appointment
     updateAppointment(appointmentId: Int!, appointmentInput: SaveAppointmentInput!): Appointment
     deleteAppointment(appointmentId: Int!): Boolean
+    updateAppointmentStatus(appointmentId: Int!, status: String!): Appointment
 
     # Medical Records
     registerMedicalRecord(medicalRecordInput: SaveMedicalRecordInput!): MedicalRecord
