@@ -144,6 +144,14 @@ type DoctorWithScheduleDTO {
     schedules: [Schedule]
 }
 
+# Tipo para la preevaluación
+type PreEvaluation {
+    id: Int
+    appointmentId: Int
+    symptoms: String
+    potentialDiagnosis: String
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -223,6 +231,13 @@ input SaveConsultInput {
     attentionTime: String
 }
 
+# Entrada para el registro de una preevaluación
+input SavePreEvaluationInput {
+    appointmentId: Int!
+    symptoms: String!
+    potentialDiagnosis: String!
+}
+
 # Enum para los roles de usuario
 enum Role {
     ADMINISTRATOR
@@ -266,6 +281,10 @@ type Query {
     findConsultsByDoctor(doctorId: Int!): [Consult]
     findConsultsByPatient(patientId: Int!): [Consult]
     findConsultsByAppointment(appointmentId: Int!): Consult
+    # PreEvaluations
+    findPreEvaluationById(preEvaluationId: Int!): PreEvaluation
+    findPreEvaluationByAppointment(appointmentId: Int!): PreEvaluation
+    getAllPreEvaluations: [PreEvaluation]
 }
 
 # Mutaciones (Mutations)
@@ -310,5 +329,8 @@ type Mutation {
     registerConsult(consultInput: SaveConsultInput!): Consult
     updateConsult(consultId: Int!, consultInput: SaveConsultInput!): Consult
     deleteConsult(consultId: Int!): Boolean
+
+    # PreEvaluations
+    registerPreEvaluation(preEvaluationInput: SavePreEvaluationInput!): PreEvaluation
 
 }
