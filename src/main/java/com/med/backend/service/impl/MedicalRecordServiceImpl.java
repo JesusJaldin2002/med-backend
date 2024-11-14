@@ -1,9 +1,12 @@
 package com.med.backend.service.impl;
 
+import com.med.backend.dto.medicalrecord.MedicalRecordDetailsDTO;
 import com.med.backend.dto.medicalrecord.SaveMedicalRecordDTO;
 import com.med.backend.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.med.backend.exception.DuplicateResourceException;
 import com.med.backend.exception.ObjectNotFoundException;
+import com.med.backend.persistence.entity.Consult;
+import com.med.backend.persistence.entity.MedicalNote;
 import com.med.backend.persistence.entity.MedicalRecord;
 import com.med.backend.persistence.repository.MedicalRecordRepository;
 import com.med.backend.persistence.repository.PatientRepository;
@@ -21,6 +24,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private MedicalNoteServiceImpl medicalNoteService;
+
+    @Autowired
+    private ConsultServiceImpl consultService;
 
     private static int lastUsedMedicalRecordId = 0;
 
@@ -56,6 +65,31 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     @Override
     public List<MedicalRecord> getAllMedicalRecords() {
         return medicalRecordRepository.findAll();
+    }
+
+    public MedicalRecordDetailsDTO getMedicalRecordDetails(int medicalRecordId) {
+        MedicalRecord medicalRecord = medicalRecordRepository.findById(medicalRecordId)
+                .orElseThrow(() -> new ObjectNotFoundException("Medical record not found for the given medicalRecordId"));
+
+        // Obtener notas médicas y consultas asociadas
+        List<MedicalNote> medicalNotes = medicalNoteService.findMedicalNotesByMedicalRecordId(medicalRecordId);
+        List<Consult> consults = consultService.findConsultsByMedicalRecordId(medicalRecordId);
+
+        // Construir y devolver el DTO
+        return new MedicalRecordDetailsDTO(
+                medicalRecord.getId(),
+                medicalRecord.getAllergies(),
+                medicalRecord.getChronicConditions(),
+                medicalRecord.getMedications(),
+                medicalRecord.getBloodType(),
+                medicalRecord.getFamilyHistory(),
+                medicalRecord.getHeight(),
+                medicalRecord.getWeight(),
+                medicalRecord.getVaccinationHistory(),
+                medicalRecord.getPatientId(),
+                medicalNotes,
+                consults
+        );
     }
 
     @Override

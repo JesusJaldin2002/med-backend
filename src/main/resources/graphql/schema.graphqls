@@ -152,6 +152,21 @@ type PreEvaluation {
     potentialDiagnosis: String
 }
 
+type MedicalRecordDetailsDTO {
+    id: Int
+    allergies: String
+    chronicConditions: String
+    medications: String
+    bloodType: String
+    familyHistory: String
+    height: Float
+    weight: Float
+    vaccinationHistory: String
+    patientId: Int
+    medicalNotes: [MedicalNote]
+    consults: [Consult]
+}
+
 # Entrada para la solicitud de autenticación
 input AuthenticationRequestInput {
     identifier: String @NotBlank
@@ -272,6 +287,7 @@ type Query {
     getAllMedicalRecords: [MedicalRecord]
     getMedicalRecordById(medicalRecordId: Int!): MedicalRecord
     getMedicalRecordByPatient(patientId: Int!): MedicalRecord
+    getMedicalRecordDetails(medicalRecordId: Int!): MedicalRecordDetailsDTO
     # Medical Notes
     getAllMedicalNotes: [MedicalNote]
     getMedicalNoteById(medicalNoteId: Int!): MedicalNote

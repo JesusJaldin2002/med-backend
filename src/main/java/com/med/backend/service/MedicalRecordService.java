@@ -1,5 +1,6 @@
 package com.med.backend.service;
 
+import com.med.backend.dto.medicalrecord.MedicalRecordDetailsDTO;
 import com.med.backend.dto.medicalrecord.SaveMedicalRecordDTO;
 import com.med.backend.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.med.backend.persistence.entity.MedicalRecord;
@@ -13,4 +14,7 @@ public interface MedicalRecordService {
     void deleteMedicalRecord(int medicalRecordId);
     MedicalRecord findMedicalRecordByPatient(int patientId);
     MedicalRecord findMedicalRecordById(int medicalRecordId);
+
+    MedicalRecordDetailsDTO getMedicalRecordDetails(int medicalRecordId);
+
 }

@@ -1,5 +1,6 @@
 package com.med.backend.controller;
 
+import com.med.backend.dto.medicalrecord.MedicalRecordDetailsDTO;
 import com.med.backend.dto.medicalrecord.SaveMedicalRecordDTO;
 import com.med.backend.dto.medicalrecord.UpdateMedicalRecordDTO;
 import com.med.backend.persistence.entity.MedicalRecord;
@@ -55,5 +56,11 @@ public class MedicalRecordController {
     @MutationMapping(name = "deleteMedicalRecord")
     public void deleteMedicalRecord(@Argument("medicalRecordId") int medicalRecordId) {
         medicalRecordService.deleteMedicalRecord(medicalRecordId);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR','RECEPTIONIST','DOCTOR','PATIENT')")
+    @QueryMapping(name = "getMedicalRecordDetails")
+    public MedicalRecordDetailsDTO getMedicalRecordDetails(@Argument("medicalRecordId") int medicalRecordId) {
+        return medicalRecordService.getMedicalRecordDetails(medicalRecordId);
     }
 }
