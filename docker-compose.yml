@@ -9,8 +9,8 @@ services:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/med_db
     depends_on:
       - mongo
-    networks:
-      - med-network
+#    networks:
+#      - med-network
 
   mongo:
     image: mongo:latest
@@ -19,12 +19,12 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
-    networks:
-      - med-network
+#    networks:
+#      - med-network
 
 volumes:
   mongo-data:
 
-networks:
-  med-network:
-    external: true
+#networks:
+#  med-network:
+#    external: true
