@@ -19,7 +19,8 @@ public class AppointmentStatisticsService {
     }
 
     public void sendDailyAppointmentStatistics(AppointmentStatisticsDTO statistics) {
-        String djangoUrl = "http://localhost:8000/dashboard/appointment-statistics/";
+        // String djangoUrl = "http://localhost:8000/dashboard/appointment-statistics/";
+        String djangoUrl = "http://20.206.205.29:8000/dashboard/appointment-statistics/";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
